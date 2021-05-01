@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable {
@@ -26,6 +28,7 @@ public class User implements Serializable {
 	private String password;
 
 	@OneToMany(mappedBy = "client")// Relação de 1*N varios pedidos tem um cliente
+	@JsonIgnore//sempre que for usar essa anotação usar no lado do 1 pq por default o java não traz o muitos ele traz apenas o 1 pois ele é lazy loading
 	private List<Order> orders = new ArrayList<>();
 
 	public User() {
