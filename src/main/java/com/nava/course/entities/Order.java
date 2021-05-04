@@ -2,6 +2,8 @@ package com.nava.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nava.course.entities.enums.OrderStatus;
 
 @Entity
@@ -31,9 +35,11 @@ public class Order implements Serializable {
 
 	@ManyToOne // Um cliente tem varios Pedidos relação N*1
 	@JoinColumn(name = "Client_id")
-
 	private User client;
 
+	@OneToMany(mappedBy = "id.order")//um pedido tem varios items de pedido
+	private Set<OrderItem> itens = new HashSet<>();
+	
 	public Order() {
 		// TODO Auto-generated constructor stub
 	}
@@ -72,6 +78,10 @@ public class Order implements Serializable {
 
 	public OrderStatus getStatus() {
 		return OrderStatus.valueOf(status);
+	}
+	
+	public Set<OrderItem> getItems(){
+		return itens;
 	}
 
 	public void setStatus(OrderStatus status) {
