@@ -38,5 +38,22 @@ public class UserService {
 		repository.deleteById(id);
 		
 	}
+	
+	public User update(long id, User obj) {
+		
+		User entity = repository.getOne(id);//vai deixar o objeto monitorado pelo jpa pronto para uso
+		updateData(entity,obj);
+		
+		return repository.save(entity);
+		
+	}
+
+	private void updateData(User entity, User obj) {
+		
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getName());
+		entity.setPhone(obj.getPhone());
+		
+	}
 
 }
