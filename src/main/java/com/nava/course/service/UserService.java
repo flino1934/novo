@@ -19,12 +19,18 @@ public class UserService {
 	public List<User> findAll() {// vai ser mandado para UserResource
 		return repository.findAll();
 	}
-	
+
 	public User findById(Long id) {// vai ser mandado para UserResource
-		
-		Optional<User> obj = repository.findById(id);//estamos armazenando o usuario do id correspondente no obj
+
+		Optional<User> obj = repository.findById(id);// estamos armazenando o usuario do id correspondente no obj
 		return obj.get();
-		
+
+	}
+
+	public User insert(User obj) {
+
+		return repository.save(obj);
+
 	}
 
 }
