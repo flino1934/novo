@@ -11,6 +11,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_payment")
 public class Payment implements Serializable {
@@ -24,6 +26,7 @@ public class Payment implements Serializable {
 
 	@OneToOne//a classe order é a classe principal pois ela é independente, pode se ter um pedido sem pagamento mas não pode ter uma pagamento sem pedido
 	@MapsId//por ser a classe dependente esta sendo anotada com esse @
+	@JsonIgnore//um  pedido tem pagamento e o pagamento tem pedido  assim gerando um looping infinito 
 	private Order order;
 
 	public Payment() {
