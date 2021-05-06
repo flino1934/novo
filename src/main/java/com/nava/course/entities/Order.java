@@ -1,11 +1,11 @@
 package com.nava.course.entities;
 
-import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,10 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nava.course.entities.enums.OrderStatus;
 
 @Entity
@@ -41,6 +41,10 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "id.order") // um pedido tem varios items de pedido// explicando mapppedby pois a chave primaria que relaciona os dois items esta em OrderItemPK e conseguimos pegar ele falando para o jpa pegar a chave id.product
 	private Set<OrderItem> itens = new HashSet<>();
 
+	@OneToOne(mappedBy = "order",cascade = CascadeType.ALL)//estamos colocando o atributo de mapeamento CascadeType.ALL para falar que tanto pedido quanto pagamento deverão ter o mesmo ID
+	//a classe order é a classe principal pois ela é independente, pode se ter um pedido sem pagamento mas não pode ter uma pagamento sem pedido
+	private Payment payment;
+	
 	public Order() {
 		// TODO Auto-generated constructor stub
 	}
@@ -90,6 +94,14 @@ public class Order implements Serializable {
 			this.status = status.getCode();
 		}
 
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	@Override
