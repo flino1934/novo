@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
@@ -30,6 +33,9 @@ public class Product implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categorie_id"))
 	private Set<Category> categories = new HashSet<>();// o set não permite repetir a mesma categoria mais de uma vez
+	
+	@OneToMany(mappedBy = "id.product")//um produto tem varios pedidos messmo não sendo o mesmo produto em si desculpa felipe do futuro isso vai ficar // confuso explicando mappedby pois a chave primaria que relaciona os dois items esta em OrderItemPK e conseguimos pegar ele falando para o jpa pegar a chave id.product
+	private Set<OrderItem> itens = new HashSet<>();// o set não permite repetir a mesma categoria mais de uma vez
 
 	public Product() {
 		// TODO Auto-generated constructor stub
@@ -86,6 +92,17 @@ public class Product implements Serializable {
 
 	public Set<Category> getCategories() {
 		return categories;
+	}
+	
+	@JsonIgnore//para não dar o problema do looping infinito estamos fazendo esta anotação pois o pedido vai chamar o produto e aqui é um metodo que tras o pedido assim entrando em um looping
+	public Set<Order> getOrders(){
+		
+		Set<Order> set = new HashSet<>();
+		for (OrderItem x : itens) {//vai percorrer a coleção itens da linha 36 que é uma coleção que é associada ao produto pois ela acessa a classe OrderItem
+			set.add(x.getOrder());//depois de varrer a lista ordemItem ele vai guardar dentro da coleção set do tipo <Order> para que não corra o risco de se repetir o mesmo produto lembrando que pode ter em quantidade mais de um mas não repetir na lista 
+		}
+		return set;
+		
 	}
 
 	@Override

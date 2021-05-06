@@ -1,5 +1,6 @@
 package com.nava.course.entities;
 
+import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -37,9 +38,9 @@ public class Order implements Serializable {
 	@JoinColumn(name = "Client_id")
 	private User client;
 
-	@OneToMany(mappedBy = "id.order")//um pedido tem varios items de pedido
+	@OneToMany(mappedBy = "id.order") // um pedido tem varios items de pedido// explicando mapppedby pois a chave primaria que relaciona os dois items esta em OrderItemPK e conseguimos pegar ele falando para o jpa pegar a chave id.product
 	private Set<OrderItem> itens = new HashSet<>();
-	
+
 	public Order() {
 		// TODO Auto-generated constructor stub
 	}
@@ -79,8 +80,8 @@ public class Order implements Serializable {
 	public OrderStatus getStatus() {
 		return OrderStatus.valueOf(status);
 	}
-	
-	public Set<OrderItem> getItems(){
+
+	public Set<OrderItem> getItems() {
 		return itens;
 	}
 
