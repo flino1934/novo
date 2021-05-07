@@ -30,7 +30,7 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT")// vai formatar a hora no formato indicado
 	private Instant moment;
 
 	private Integer status;

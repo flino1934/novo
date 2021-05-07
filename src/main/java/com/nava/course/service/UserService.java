@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.nava.course.entities.User;
 import com.nava.course.repositories.UserRepository;
+import com.nava.course.service.exceptions.ResourceNotFoundException;
 
 @Service // estou registrando minha classe no spring como uma classe de serviço
 //A classe de serviço é aonde fica toda a regra de negocio
@@ -23,7 +24,7 @@ public class UserService {
 	public User findById(Long id) {// vai ser mandado para UserResource
 
 		Optional<User> obj = repository.findById(id);// estamos armazenando o usuario do id correspondente no obj
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 
 	}
 
