@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.nava.course.entities.User;
 import com.nava.course.repositories.UserRepository;
+import com.nava.course.service.exceptions.DatabaseExceptions;
 import com.nava.course.service.exceptions.ResourceNotFoundException;
 
 @Service // estou registrando minha classe no spring como uma classe de serviço
@@ -35,9 +38,13 @@ public class UserService {
 	}
 	
 	public void deleteById(Long id) {
-		
+		try {
 		repository.deleteById(id);
-		
+		}catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DatabaseExceptions(e.getMessage());
+		}
 	}
 	
 	public User update(long id, User obj) {
