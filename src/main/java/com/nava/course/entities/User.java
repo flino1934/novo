@@ -26,6 +26,7 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
+	private String mudanca;
 
 	@OneToMany(mappedBy = "client")// Relação de 1*N varios pedidos tem um cliente
 	@JsonIgnore//sempre que for usar essa anotação usar no lado do 1 pq por default o java não traz o muitos ele traz apenas o 1 pois ele é lazy loading
